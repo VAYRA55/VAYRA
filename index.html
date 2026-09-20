@@ -112,10 +112,28 @@ let selectedColour = "WHITE", selectedSize = "M";
 
 function rupees(n){ return "₹" + Number(n).toLocaleString("en-IN"); }
 function save(){ localStorage.setItem("vayraCart", JSON.stringify(cart)); renderCart(); }
-function selectOptions(){
-  document.querySelectorAll("#colourOptions .option").forEach(b=>b.onclick=()=>{document.querySelectorAll("#colourOptions .option").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedColour=b.dataset.value;});
-  document.querySelectorAll("#sizeOptions .option").forEach(b=>b.onclick=()=>{document.querySelectorAll("#sizeOptions .option").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedSize=b.dataset.value;});
-}
+
+  function selectOptions(){
+  document.querySelectorAll("#colourOptions .option").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll("#colourOptions .option").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    selectedColour=b.dataset.value;
+
+    const image = selectedColour === "BLACK"
+      ? "assets/vayra-black-pink.png"
+      : "assets/vayra-white-pink.png";
+
+    document.querySelectorAll(".hero-art img, .product-media img").forEach(img=>{
+      img.src=image;
+    });
+  });
+
+  document.querySelectorAll("#sizeOptions .option").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll("#sizeOptions .option").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    selectedSize=b.dataset.value;
+  });
+  }
 function addToCart(){
   const key=selectedColour+"-"+selectedSize;
   const found=cart.find(x=>x.key===key);
