@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkout — VAYRA</title><link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<header class="site-header">
+<a class="brand" href="index.html">VAYRA<sup>®</sup></a>
+<a class="cart-btn" href="index.html">BACK TO SHOP</a>
+</header>
+
+<main class="checkout-page">
+<div class="checkout-grid">
+<section>
+<div class="eyebrow">VAYRA / SECURE CHECKOUT</div>
+<h1 class="checkout-title">Complete your order.</h1>
+<form id="orderForm" class="card">
+<div class="field"><label>FULL NAME *</label><input id="name" required placeholder="Your full name"></div>
+<div class="row">
+<div class="field"><label>MOBILE NUMBER *</label><input id="phone" required inputmode="tel" pattern="[0-9]{10}" maxlength="10" placeholder="10 digit mobile"></div>
+<div class="field"><label>PIN CODE *</label><input id="pin" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6 digit PIN"></div>
+</div>
+<div class="field"><label>HOUSE / FLAT / STREET *</label><input id="address" required placeholder="Full delivery address"></div>
+<div class="row">
+<div class="field"><label>CITY *</label><input id="city" required placeholder="City"></div>
+<div class="field"><label>STATE *</label><input id="state" required placeholder="State"></div>
+</div>
+<div class="field"><label>LANDMARK (OPTIONAL)</label><input id="landmark" placeholder="Nearby landmark"></div>
+
+<div class="label">PAYMENT METHOD</div>
+<div class="payment-options">
+<label class="pay-option"><input type="radio" name="payment" value="COD" checked> <span><b>Cash on Delivery</b><br><small>Pay when your order arrives.</small></span></label>
+<label class="pay-option"><input type="radio" name="payment" value="UPI"> <span><b>UPI</b><br><small>Google Pay / PhonePe / Paytm / any UPI app.</small></span></label>
+</div>
+<div id="upiPanel" class="pay-panel">
+<b>UPI PAYMENT</b>
+<p class="muted" style="margin-top:8px">Scan the QR with your UPI app or use the UPI ID shown below. After payment, enter the UTR/reference number.</p>
+<div id="qrcode" class="qr"></div>
+<div style="text-align:center;font-weight:700" id="upiIdText"></div>
+<div class="field" style="margin-top:15px"><label>UPI UTR / REFERENCE NUMBER *</label><input id="utr" placeholder="Enter UTR after payment"></div>
+</div>
+
+<div class="notice">By placing this order, you confirm that the delivery details are correct. Orders are handled through WhatsApp for confirmation.</div>
+<button class="btn" style="width:100%;margin-top:18px" type="submit">PLACE ORDER</button>
+</form>
+</section>
+
+<aside>
+<div class="card order-summary">
+<div class="eyebrow">ORDER SUMMARY</div>
+<div id="summary"></div>
+<div class="total"><span>TOTAL</span><span id="grandTotal">₹0</span></div>
+</div>
+</aside>
+</div>
+</main>
+
+<script src="config.js"></script>
+<script>
+const cart=JSON.parse(localStorage.getItem("vayraCart")||"[]");
+const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+function rupees(n){return "₹"+Number(n).toLocaleString("en-IN");}
+if(!cart.length){location.href="index.html";}
+document.getElementById("summary").innerHTML=cart.map(x=>`<div class="item"><span>${x.product}<br><small>${x.colour} / ${x.size} × ${x.qty}</small></span><b>${rupees(x.price*x.qty)}</b></div>`).join("");
+document.getElementById("grandTotal").textContent=rupees(total);
+
+const radios=document.querySelectorAll('input[name="payment"]');
+const panel=document.getElementById("upiPanel");
+const upiIdText=document.getElementById("upiIdText");
+function setupUPI(){
+  const valid=!VAYRA_CONFIG.upiId.startsWith("YOUR-");
+  upiIdText.textContent=valid?VAYRA_CONFIG.upiId:"UPI ID not configured yet";
+  document.getElementById("qrcode").innerHTML="";
+  if(valid){
+    const upi=`upi://pay?pa=${encodeURIComponent(VAYRA_CONFIG.upiId)}&pn=${encodeURIComponent(VAYRA_CONFIG.upiName)}&am=${total}&cu=INR`;
+    new QRCode(document.getElementById("qrcode"),{text:upi,width:190,height:190});
+  }
+}
+radios.forEach(r=>r.addEventListener("change",()=>{
+  const isUPI=document.querySelector('input[name="payment"]:checked').value==="UPI";
+  panel.classList.toggle("show",isUPI);
+  if(isUPI)setupUPI();
+}));
+
+document.getElementById("orderForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const payment=document.querySelector('input[name="payment"]:checked').value;
+ if(payment==="UPI" && (VAYRA_CONFIG.upiId.startsWith("YOUR-") || !document.getElementById("utr").value.trim())){
+   alert("Please configure your UPI ID and enter the UTR/reference number after payment."); return;
+ }
+ const orderId="VY"+Date.now().toString().slice(-8);
+ const customer={
+   name:document.getElementById("name").value.trim(),
+   phone:document.getElementById("phone").value.trim(),
+   pin:document.getElementById("pin").value.trim(),
+   address:document.getElementById("address").value.trim(),
+   city:document.getElementById("city").value.trim(),
+   state:document.getElementById("state").value.trim(),
+   landmark:document.getElementById("landmark").value.trim()
+ };
+ let msg=`Hello VAYRA! I want to place an order.%0A%0AOrder ID: ${orderId}%0AName: ${customer.name}%0AMobile: ${customer.phone}%0AAddress: ${customer.address}, ${customer.city}, ${customer.state} - ${customer.pin}`;
+ if(customer.landmark)msg+=`%0ALandmark: ${customer.landmark}`;
+ msg+=`%0A%0AItems:%0A`+cart.map(x=>`- ${x.product} | ${x.colour} | ${x.size} | Qty ${x.qty} | ${rupees(x.price*x.qty)}`).join("%0A");
+ msg+=`%0A%0ATotal: ${rupees(total)}%0APayment: ${payment}`;
+ if(payment==="UPI")msg+=`%0AUPI UTR: ${document.getElementById("utr").value.trim()}`;
+ localStorage.removeItem("vayraCart");
+ location.href=`https://wa.me/${VAYRA_CONFIG.whatsappNumber}?text=${msg}`;
+});
+</script>
+</body>
+</html>

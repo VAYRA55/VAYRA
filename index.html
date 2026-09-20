@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VAYRA — Wear Your Identity</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="#top">VAYRA<sup>®</sup></a>
+  <nav class="nav">
+    <a href="#shop">SHOP</a><a href="#about">ABOUT</a><a href="#contact">CONTACT</a>
+    <button class="cart-btn" onclick="openCart()">BAG <span class="cart-count" id="cartCount">0</span></button>
+  </nav>
+  <button class="cart-btn" onclick="openCart()">BAG <span class="cart-count" id="cartCountMobile">0</span></button>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div>
+    <div class="eyebrow">VAYRA® / ORIGIN 01</div>
+    <h1>Wear your <em>identity.</em></h1>
+    <p>Premium contemporary streetwear, designed in India for a global generation.</p>
+    <a href="#shop" class="btn light">EXPLORE COLLECTION</a>
+  </div>
+  <div class="hero-art"><img src="assets/pluse-tee.svg" alt="VAYRA PLUSE TEE"></div>
+</section>
+
+<section class="manifesto">
+  <div>
+    <div class="eyebrow">VAYRA MANIFESTO</div>
+    <h2>Not made to<br>blend in.<br><em>Made to become<br>yours.</em></h2>
+  </div>
+</section>
+
+<section class="shop" id="shop">
+  <div class="section-top">
+    <div><div class="eyebrow">ORIGIN COLLECTION</div><h2>PLUSE TEE</h2></div>
+    <p>A premium 240 GSM oversized everyday tee with a bold VAYRA identity. Unisex and built for Indian streetwear.</p>
+  </div>
+  <div class="product-grid">
+    <div class="product-media"><img src="assets/pluse-tee.svg" alt="VAYRA PLUSE TEE"></div>
+    <div class="product-info">
+      <div class="eyebrow">VAYRA / ORIGIN 01</div>
+      <h3>VAYRA PLUSE TEE</h3>
+      <div class="price">₹499</div>
+      <p class="muted">Premium cotton feel, oversized silhouette and durable print. Select your colour and size, then checkout with Cash on Delivery or UPI.</p>
+      <div class="specs">
+        <div class="spec"><b>FABRIC</b>Premium Cotton</div>
+        <div class="spec"><b>WEIGHT</b>240 GSM</div>
+        <div class="spec"><b>FIT</b>Oversized</div>
+      </div>
+      <div class="label">COLOUR</div>
+      <div class="options" id="colourOptions">
+        <button class="option active" data-value="WHITE">WHITE</button>
+        <button class="option" data-value="BLACK">BLACK</button>
+      </div>
+      <div class="label">SIZE</div>
+      <div class="options" id="sizeOptions">
+        <button class="option" data-value="XS">XS</button><button class="option" data-value="S">S</button>
+        <button class="option active" data-value="M">M</button><button class="option" data-value="L">L</button>
+        <button class="option" data-value="XL">XL</button><button class="option" data-value="XXL">XXL</button>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="addToCart()">ADD TO BAG</button>
+        <button class="btn light" onclick="buyNow()">BUY NOW</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="info-bar">
+ <div class="info">🚚<strong>PAN INDIA DELIVERY</strong>3–7 business days</div>
+ <div class="info">💵<strong>CASH ON DELIVERY</strong>Pay at your doorstep</div>
+ <div class="info">UPI<strong>UPI PAYMENT</strong>Google Pay / PhonePe / Paytm</div>
+ <div class="info">✓<strong>SECURE CHECKOUT</strong>Simple order flow</div>
+</section>
+
+<section class="about" id="about">
+ <div class="eyebrow">ABOUT VAYRA</div>
+ <h2>Wear Your Origin.</h2>
+ <p>VAYRA is more than a clothing brand — it's a mindset. Born from individuality, confidence and street culture, VAYRA creates premium everyday pieces for people who choose to stand out.</p>
+</section>
+
+<section class="details">
+ <div><h3>PRODUCT DETAILS</h3><ul><li>✓ Premium Cotton Fabric</li><li>✓ 240 GSM</li><li>✓ Oversized Fit</li><li>✓ Unisex</li><li>✓ Soft & Comfortable</li><li>✓ Durable Print</li><li>✓ Made for Indian Streetwear</li></ul></div>
+ <div><h3>WASH CARE</h3><ul><li>Cold machine wash</li><li>Do not bleach</li><li>Turn inside out before washing</li><li>Do not iron directly on print</li><li>Dry in shade</li></ul></div>
+ <div><h3>SHIPPING & EXCHANGE</h3><ul><li>🚚 Delivery: 3–7 business days</li><li>📦 Pan India shipping</li><li>↩ Size exchange within 7 days</li><li>Product must be unused and unwashed</li><li>Subject to product condition</li></ul></div>
+</section>
+
+<section class="contact" id="contact">
+ <div><h3>VAYRA</h3><p>WEAR YOUR IDENTITY.</p></div>
+ <div><h3>GET IN TOUCH</h3><p>📞 <a href="tel:+918445478251">+91 8445478251</a></p><p>✉ <a href="mailto:wearvayra@gmail.com">wearvayra@gmail.com</a></p></div>
+ <div><h3>FOLLOW VAYRA</h3><p>Instagram: <a href="https://instagram.com/wearvayra_" target="_blank">@wearvayra_</a></p><p>COD + UPI available</p></div>
+</section>
+</main>
+
+<footer>© 2026 VAYRA. All Rights Reserved. | WEAR YOUR IDENTITY.</footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="drawer" id="drawer">
+ <div class="drawer-head"><b>YOUR BAG</b><button class="close" onclick="closeCart()">×</button></div>
+ <div class="cart-items" id="cartItems"></div>
+ <div class="cart-foot"><div class="total"><span>TOTAL</span><span id="cartTotal">₹0</span></div><button class="btn" style="width:100%" onclick="goCheckout()">PROCEED TO CHECKOUT</button></div>
+</aside>
+
+<script src="config.js"></script>
+<script>
+let cart = JSON.parse(localStorage.getItem("vayraCart") || "[]");
+let selectedColour = "WHITE", selectedSize = "M";
+
+function rupees(n){ return "₹" + Number(n).toLocaleString("en-IN"); }
+function save(){ localStorage.setItem("vayraCart", JSON.stringify(cart)); renderCart(); }
+function selectOptions(){
+  document.querySelectorAll("#colourOptions .option").forEach(b=>b.onclick=()=>{document.querySelectorAll("#colourOptions .option").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedColour=b.dataset.value;});
+  document.querySelectorAll("#sizeOptions .option").forEach(b=>b.onclick=()=>{document.querySelectorAll("#sizeOptions .option").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedSize=b.dataset.value;});
+}
+function addToCart(){
+  const key=selectedColour+"-"+selectedSize;
+  const found=cart.find(x=>x.key===key);
+  if(found) found.qty++;
+  else cart.push({key,product:VAYRA_CONFIG.product,price:VAYRA_CONFIG.price,colour:selectedColour,size:selectedSize,qty:1});
+  save(); openCart();
+}
+function renderCart(){
+  const el=document.getElementById("cartItems"), count=cart.reduce((s,x)=>s+x.qty,0), total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  document.getElementById("cartCount").textContent=count; document.getElementById("cartCountMobile").textContent=count; document.getElementById("cartTotal").textContent=rupees(total);
+  if(!cart.length){el.innerHTML='<div style="padding:40px 0;text-align:center;color:#777">Your bag is empty.</div>';return;}
+  el.innerHTML=cart.map((x,i)=>`<div class="cart-item"><img src="${VAYRA_CONFIG.productImage}" alt=""><div><b>${x.product}</b><div class="muted">${x.colour} / ${x.size}</div><div class="qty"><button onclick="changeQty(${i},-1)">−</button><span>${x.qty}</span><button onclick="changeQty(${i},1)">+</button></div><button class="remove" onclick="removeItem(${i})">Remove</button></div><b>${rupees(x.price*x.qty)}</b></div>`).join("");
+}
+function changeQty(i,d){cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);save();}
+function removeItem(i){cart.splice(i,1);save();}
+function openCart(){document.getElementById("drawer").classList.add("open");document.getElementById("overlay").classList.add("show");renderCart();}
+function closeCart(){document.getElementById("drawer").classList.remove("open");document.getElementById("overlay").classList.remove("show");}
+function goCheckout(){ if(!cart.length){alert("Your bag is empty.");return;} location.href="checkout.html"; }
+function buyNow(){cart=[{key:selectedColour+"-"+selectedSize,product:VAYRA_CONFIG.product,price:VAYRA_CONFIG.price,colour:selectedColour,size:selectedSize,qty:1}];save();location.href="checkout.html";}
+selectOptions();renderCart();
+</script>
+</body>
+</html>
